@@ -1,5 +1,16 @@
 version: "3"
+volumes:
+  mongodb_data_container:
+
 services:
+  db:
+    image: mongo:latest
+    container_name: db
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
   nps_count:
     build:
       context: "."
