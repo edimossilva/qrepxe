@@ -1,0 +1,22 @@
+version: "3"
+services:
+  nps_count:
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    container_name: nps_count
+    volumes:
+      - ./nps_count:/app
+    depends_on:
+      - db
+    tty: true
+    command: rails s -b 0.0.0.0
+    ports:
+      - "3000:3000"
+# docker-compose build
+# docker-compose up -d
+# docker-compose exec tasks_manager_core rake db:create db:migrate db:seed
+# docker-compose exec auth_provider rake db:create db:migrate db:seed
+# docker-compose exec tasks_manager_core rspec
+# localhost:3000
+# rails new nps_count --api --skip-active-record --no-sprockets
