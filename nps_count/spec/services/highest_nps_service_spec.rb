@@ -1,0 +1,32 @@
+require 'rails_helper'
+
+RSpec.describe 'HighestNpsService' do
+  context '#call' do
+    let!(:highest_company) { Faker::Company.unique.name }
+
+    before do
+      # nps = 60%
+      create_list(:answer, 7, :promoter, company: highest_company)
+      create_list(:answer, 2, :passive, company: highest_company)
+      create_list(:answer, 1, :detractor, company: highest_company)
+
+      second_company = Faker::Company.unique.name
+      # nps = -25%
+      create_list(:answer, 5, :promoter, company: second_company)
+      create_list(:answer, 5, :passive, company: second_company)
+      create_list(:answer, 10, :detractor, company: second_company)
+
+      # nps = 5%
+      third_company = Faker::Company.unique.name
+      create_list(:answer, 25, :promoter, company: third_company)
+      create_list(:answer, 55, :passive, company: third_company)
+      create_list(:answer, 20, :detractor, company: third_company)
+    end
+
+    subject { HighestNpsService.new.call }
+
+    it { expect(subject[:highest_nps]).to eq(60) }
+
+    it { expect(subject[:highest_nps_company]).to eq(highest_company) }
+  end
+end

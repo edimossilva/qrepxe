@@ -7,6 +7,10 @@ class AnswerCollection
     MongoConnection.instance.client[:answers]
   end
 
+  def self.companies
+    collection.distinct('company')
+  end
+
   def self.save(data)
     collection.insert_one(data)
   end
