@@ -22,39 +22,65 @@ RSpec.describe 'NpsService' do
   end
 
   context '#call' do
-    context 'when nps is positive' do
-      let!(:promoters_quantity) { 25 }
-      let!(:passives_quantity) { 55 }
-      let!(:detractors_quantity) { 20 }
-      let!(:countTotal) { promoters_quantity + passives_quantity + detractors_quantity }
+    context 'When receive no params' do
+      context 'When nps is positive' do
+        let!(:promoters_quantity) { 25 }
+        let!(:passives_quantity) { 55 }
+        let!(:detractors_quantity) { 20 }
+        let!(:countTotal) { promoters_quantity + passives_quantity + detractors_quantity }
 
-      before do
-        create_list(:answer, promoters_quantity, :promoter)
-        create_list(:answer, passives_quantity, :passive)
-        create_list(:answer, detractors_quantity, :detractor)
+        before do
+          create_list(:answer, promoters_quantity, :promoter)
+          create_list(:answer, passives_quantity, :passive)
+          create_list(:answer, detractors_quantity, :detractor)
+        end
+
+        subject { NpsService.call }
+
+        it { expect(subject).to eq('5.0%') }
       end
 
-      subject { NpsService.call }
+      context 'When nps is negative' do
+        let!(:promoters_quantity) { 50 }
+        let!(:passives_quantity) { 50 }
+        let!(:detractors_quantity) { 100 }
+        let!(:countTotal) { promoters_quantity + passives_quantity + detractors_quantity }
 
-      it { expect(subject).to eq('5.0%') }
+        before do
+          create_list(:answer, promoters_quantity, :promoter)
+          create_list(:answer, passives_quantity, :passive)
+          create_list(:answer, detractors_quantity, :detractor)
+        end
+
+        subject { NpsService.call }
+
+        it {
+          expect(subject).to eq('-25.0%')
+        }
+      end
     end
 
-    context 'when nps is negative' do
-      let!(:promoters_quantity) { 50 }
-      let!(:passives_quantity) { 50 }
-      let!(:detractors_quantity) { 100 }
+    context 'When receive company params' do
+      let!(:promoters_quantity) { 10 }
+      let!(:passives_quantity) { 10 }
+      let!(:detractors_quantity) { 10 }
       let!(:countTotal) { promoters_quantity + passives_quantity + detractors_quantity }
+      let!(:company_name) { 'Funny Happy Recruiting' }
 
       before do
         create_list(:answer, promoters_quantity, :promoter)
         create_list(:answer, passives_quantity, :passive)
         create_list(:answer, detractors_quantity, :detractor)
+
+        create_list(:answer, 70, :promoter, company: company_name)
+        create_list(:answer, 20, :passive, company: company_name)
+        create_list(:answer, 10, :detractor, company: company_name)
       end
 
-      subject { NpsService.call }
+      subject { NpsService.call(company: company_name) }
 
       it {
-        expect(subject).to eq('-25.0%')
+        expect(subject).to eq('60.0%')
       }
     end
   end

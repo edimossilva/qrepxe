@@ -1,4 +1,6 @@
 class NpsService < ApplicationService
+  attr_reader :params
+
   def initialize(params = {})
     @params = params
   end
@@ -23,6 +25,7 @@ class NpsService < ApplicationService
 
   def count_categories
     AnswerCollection.collection.aggregate([
+                                            { '$match': params },
                                             {
                                               '$project': {
                                                 item: 1,
