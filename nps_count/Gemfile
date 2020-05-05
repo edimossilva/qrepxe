@@ -15,6 +15,7 @@ gem 'bson'
 gem 'mongo'
 
 group :development, :test do
+  gem 'mimemagic', '0.3.4'
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-remote'
