@@ -5,6 +5,6 @@ class NpsController < ApplicationController
   end
 
   def nps_params
-    params.permit(:company)
+    params.permit(:company, :year, :month)
   end
 end

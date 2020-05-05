@@ -1,8 +1,29 @@
 class NpsService < ApplicationService
-  attr_reader :params
+  attr_reader :query
 
   def initialize(params = {})
-    @params = params
+    @query = {}
+    merge_company(params[:company]) if params.key? :company
+    merge_date(params[:date]) if params.key? :date
+  end
+
+  def merge_company(company)
+    @query['company'] = company
+  end
+
+  def merge_date(date)
+    from_date = Time.zone.local(date[:year], date[:month], 1)
+    to_date = from_date.at_beginning_of_month.next_month
+
+    from_timestamp = from_date.strftime('%Y-%m-%dT%H:%M:%S.%L%z')
+    to_timestamp = to_date.strftime('%Y-%m-%dT%H:%M:%S.%L%z')
+
+    timestamp_query = {
+      '$gte': from_timestamp,
+      '$lt': to_timestamp
+    }
+
+    @query['timestamp'] = timestamp_query
   end
 
   def call
@@ -25,7 +46,7 @@ class NpsService < ApplicationService
 
   def count_categories
     AnswerCollection.collection.aggregate([
-                                            { '$match': params },
+                                            { '$match': query },
                                             {
                                               '$project': {
                                                 item: 1,

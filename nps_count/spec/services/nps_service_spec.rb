@@ -61,16 +61,12 @@ RSpec.describe 'NpsService' do
     end
 
     context 'When receive company params' do
-      let!(:promoters_quantity) { 10 }
-      let!(:passives_quantity) { 10 }
-      let!(:detractors_quantity) { 10 }
-      let!(:countTotal) { promoters_quantity + passives_quantity + detractors_quantity }
       let!(:company_name) { 'Funny Happy Recruiting' }
 
       before do
-        create_list(:answer, promoters_quantity, :promoter)
-        create_list(:answer, passives_quantity, :passive)
-        create_list(:answer, detractors_quantity, :detractor)
+        create_list(:answer, 10, :promoter)
+        create_list(:answer, 10, :passive)
+        create_list(:answer, 10, :detractor)
 
         create_list(:answer, 70, :promoter, company: company_name)
         create_list(:answer, 20, :passive, company: company_name)
@@ -78,6 +74,68 @@ RSpec.describe 'NpsService' do
       end
 
       subject { NpsService.call(company: company_name) }
+
+      it {
+        expect(subject).to eq('60.0%')
+      }
+    end
+
+    context 'When receive date params' do
+      let!(:query_date) do
+        {
+          month: 4,
+          year: 2020
+        }
+      end
+
+      before do
+        january_date = Time.zone.local(2020, 1, 1)
+        april_date = Time.zone.local(2020, 4, 1)
+
+        create_list(:answer, 50, :promoter, timestamp: january_date)
+        create_list(:answer, 50, :passive, timestamp: january_date)
+        create_list(:answer, 50, :detractor, timestamp: january_date)
+
+        create_list(:answer, 7, :promoter, timestamp: april_date)
+        create_list(:answer, 2, :passive, timestamp: april_date)
+        create_list(:answer, 1, :detractor, timestamp: april_date)
+      end
+
+      subject { NpsService.call(date: query_date) }
+
+      it {
+        expect(subject).to eq('60.0%')
+      }
+    end
+
+    context 'When receive company name and date params' do
+      let!(:query_date) do
+        {
+          month: 4,
+          year: 2020
+        }
+      end
+      let!(:company_name) { 'Funny Happy Recruiting' }
+
+      before do
+        january_date = Time.zone.local(2020, 1, 1)
+        april_date = Time.zone.local(2020, 4, 1)
+        other_company_name = 'checkmarket'
+
+        create_list(:answer, 50, :promoter, timestamp: january_date)
+        create_list(:answer, 50, :passive, timestamp: january_date)
+        create_list(:answer, 50, :detractor, timestamp: january_date)
+
+        create_list(:answer, 88, :promoter, timestamp: january_date, company: company_name)
+        create_list(:answer, 97, :passive, timestamp: april_date, company: other_company_name)
+        create_list(:answer, 45, :detractor, timestamp: january_date, company: company_name)
+
+        create_list(:answer, 7, :promoter, timestamp: april_date, company: company_name)
+        create_list(:answer, 2, :passive, timestamp: april_date, company: company_name)
+        create_list(:answer, 1, :detractor, timestamp: april_date, company: company_name)
+      end
+
+      subject { NpsService.call({ date: query_date, company: company_name }) }
 
       it {
         expect(subject).to eq('60.0%')
