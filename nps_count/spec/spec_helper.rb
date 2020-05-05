@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'models/answer'
 require 'faker'
 
 include ActionDispatch::TestProcess
@@ -13,5 +12,10 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  config.before do
+    MongoConnection.instance.drop
+  end
+
   config.shared_context_metadata_behavior = :apply_to_host_groups
 end
+Pry.pager = false
