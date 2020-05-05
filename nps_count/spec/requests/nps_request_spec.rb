@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'NpsReports', type: :request do
+RSpec.describe 'NpsController', type: :request do
   context '#index' do
     context 'When query is empty' do
       let!(:promoters_quantity) { 25 }

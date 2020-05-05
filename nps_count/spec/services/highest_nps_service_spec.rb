@@ -25,7 +25,7 @@ RSpec.describe 'HighestNpsService' do
 
     subject { HighestNpsService.new.call }
 
-    it { expect(subject[:highest_nps]).to eq(60) }
+    it { expect(subject[:highest_nps]).to eq('60.0%') }
 
     it { expect(subject[:highest_nps_company]).to eq(highest_company) }
   end

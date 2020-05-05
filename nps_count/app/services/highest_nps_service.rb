@@ -16,7 +16,7 @@ class HighestNpsService < ApplicationService
     end
 
     {
-      highest_nps: highest_nps,
+      highest_nps: "#{highest_nps}%",
       highest_nps_company: highest_nps_company
     }
   end
