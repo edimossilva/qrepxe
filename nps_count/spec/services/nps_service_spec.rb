@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'NpsReporterService' do
+RSpec.describe 'NpsService' do
   context '#count_categories' do
     let!(:promoters_quantity) { 10 }
     let!(:passives_quantity) { 30 }
@@ -12,7 +12,7 @@ RSpec.describe 'NpsReporterService' do
       create_list(:answer, passives_quantity, :passive)
       create_list(:answer, detractors_quantity, :detractor)
     end
-    subject { NpsReporterService.new({}).count_categories }
+    subject { NpsService.new({}).count_categories }
 
     it { expect(subject['countPromoters']).to eq(promoters_quantity) }
 
@@ -34,7 +34,7 @@ RSpec.describe 'NpsReporterService' do
         create_list(:answer, detractors_quantity, :detractor)
       end
 
-      subject { NpsReporterService.call({}) }
+      subject { NpsService.call }
 
       it { expect(subject).to eq('5.0%') }
     end
@@ -51,7 +51,7 @@ RSpec.describe 'NpsReporterService' do
         create_list(:answer, detractors_quantity, :detractor)
       end
 
-      subject { NpsReporterService.call({}) }
+      subject { NpsService.call }
 
       it {
         expect(subject).to eq('-25.0%')

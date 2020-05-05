@@ -1,5 +1,5 @@
-class NpsReporterService < ApplicationService
-  def initialize(params)
+class NpsService < ApplicationService
+  def initialize(params = {})
     @params = params
   end
 
