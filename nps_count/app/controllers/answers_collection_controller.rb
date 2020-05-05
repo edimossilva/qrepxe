@@ -1,5 +1,4 @@
 class AnswersCollectionController < ApplicationController
-  # POST /answers
   def create
     answer = AnswerCollection.save(answer_collection_params)
     render json: answer, status: :created

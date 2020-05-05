@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Answers', type: :request do
+RSpec.describe 'AnswersCollection', type: :request do
   context '#create' do
     context 'When data is valid' do
       let!(:create_answers_params) do
