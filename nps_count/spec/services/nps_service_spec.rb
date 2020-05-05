@@ -12,7 +12,7 @@ RSpec.describe 'NpsService' do
       create_list(:answer, passives_quantity, :passive)
       create_list(:answer, detractors_quantity, :detractor)
     end
-    subject { NpsService.new({}).count_categories }
+    subject { NpsService.new.count_categories }
 
     it { expect(subject['countPromoters']).to eq(promoters_quantity) }
 
@@ -135,7 +135,7 @@ RSpec.describe 'NpsService' do
         create_list(:answer, 1, :detractor, timestamp: april_date, company: company_name)
       end
 
-      subject { NpsService.call({ date: query_date, company: company_name }) }
+      subject { NpsService.call(date: query_date, company: company_name) }
 
       it {
         expect(subject).to eq('60.0%')
