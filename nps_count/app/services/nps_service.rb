@@ -12,6 +12,8 @@ class NpsService < ApplicationService
   end
 
   def merge_date(date)
+    date = date.transform_keys(&:to_sym)
+
     from_date = Time.zone.local(date[:year], date[:month], 1)
     to_date = from_date.at_beginning_of_month.next_month
 

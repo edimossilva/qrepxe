@@ -5,7 +5,7 @@ FactoryBot.define do
     end
 
     grade { Faker::Number.between(from: 0, to: 10) }
-    company { Faker::Book.publisher }
+    company { Faker::Company.name }
     timestamp do
       january1 = Time.zone.local(2020, 1, 1)
       april30 = Time.zone.local(2020, 4, 30)
