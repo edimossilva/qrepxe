@@ -4,20 +4,11 @@ class HighestNpsService < ApplicationService
   def call
     companies = Answer.companies
 
-    highest_nps = -100
-    highest_nps_company = nil
-
-    companies.each do |company|
-      company_nps = company_nps_f(company)
-      if company_nps > highest_nps
-        highest_nps = company_nps
-        highest_nps_company = company
-      end
-    end
+    company = companies.max { |a, b| company_nps_f(a) <=> company_nps_f(b) }
 
     {
-      highest_nps: "#{highest_nps}%",
-      highest_nps_company: highest_nps_company
+      highest_nps: "#{company_nps_f(company)}%",
+      highest_nps_company: company
     }
   end
 
