@@ -24,6 +24,8 @@ services:
     command: rails s -b 0.0.0.0
     ports:
       - "3000:3000"
+    environment:
+      - RUBYOPT=-W:no-deprecated
 # docker-compose build
 # docker-compose up -d
 # docker-compose exec tasks_manager_core rake db:create db:migrate db:seed
