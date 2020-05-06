@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :answer do
     to_create do |instance|
-      AnswerCollection.save(instance.as_json)
+      Answer.save(instance.as_json)
     end
 
     grade { Faker::Number.between(from: 0, to: 10) }

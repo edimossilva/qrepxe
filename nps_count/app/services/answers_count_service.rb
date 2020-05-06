@@ -10,15 +10,15 @@ class AnswersCountService < ApplicationService
   end
 
   def find_lowest
-    AnswerCollection.collection
-                    .aggregate([
-                                 {
-                                   '$group': {
-                                     _id: '$company',
-                                     count: { '$sum': 1 }
-                                   }
-                                 },
-                                 { '$sort': { count: 1 } }
-                               ]).first
+    Answer.collection
+          .aggregate([
+                       {
+                         '$group': {
+                           _id: '$company',
+                           count: { '$sum': 1 }
+                         }
+                       },
+                       { '$sort': { count: 1 } }
+                     ]).first
   end
 end

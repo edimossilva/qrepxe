@@ -47,30 +47,30 @@ class NpsService < ApplicationService
   end
 
   def count_categories
-    AnswerCollection.collection.aggregate([
-                                            { '$match': query },
-                                            {
-                                              '$project': {
-                                                item: 1,
-                                                'promoters': {
-                                                  '$cond': [{ '$gt': ['$grade', 8] }, 1, 0]
-                                                },
-                                                'detractors': {
-                                                  '$cond': [{ '$lt': ['$grade', 7] }, 1, 0]
-                                                },
-                                                'total': {
-                                                  '$cond': [{ '$gte': ['$grade', 0] }, 1, 0]
-                                                }
-                                              }
-                                            },
-                                            {
-                                              '$group': {
-                                                _id: '$item',
-                                                countPromoters: { '$sum': '$promoters' },
-                                                countDetractors: { '$sum': '$detractors' },
-                                                countTotal: { '$sum': '$total' }
-                                              }
-                                            }
-                                          ]).first
+    Answer.collection.aggregate([
+                                  { '$match': query },
+                                  {
+                                    '$project': {
+                                      item: 1,
+                                      'promoters': {
+                                        '$cond': [{ '$gt': ['$grade', 8] }, 1, 0]
+                                      },
+                                      'detractors': {
+                                        '$cond': [{ '$lt': ['$grade', 7] }, 1, 0]
+                                      },
+                                      'total': {
+                                        '$cond': [{ '$gte': ['$grade', 0] }, 1, 0]
+                                      }
+                                    }
+                                  },
+                                  {
+                                    '$group': {
+                                      _id: '$item',
+                                      countPromoters: { '$sum': '$promoters' },
+                                      countDetractors: { '$sum': '$detractors' },
+                                      countTotal: { '$sum': '$total' }
+                                    }
+                                  }
+                                ]).first
   end
 end

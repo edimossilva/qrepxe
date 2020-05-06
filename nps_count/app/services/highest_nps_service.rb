@@ -2,7 +2,7 @@ class HighestNpsService < ApplicationService
   attr_reader :query
 
   def call
-    companies = AnswerCollection.companies
+    companies = Answer.companies
 
     highest_nps = -100
     highest_nps_company = nil

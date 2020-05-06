@@ -1,6 +1,6 @@
 class StatsNpsService < ApplicationService
   def call
-    companies = AnswerCollection.companies
+    companies = Answer.companies
 
     companies_nps = find_companies_nps(companies)
 

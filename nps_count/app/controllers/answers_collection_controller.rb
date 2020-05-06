@@ -1,7 +1,7 @@
 class AnswersCollectionController < ApplicationController
   def create
-    answer = AnswerCollection.save_many(answer_collection_params)
-    render json: answer, status: :created
+    answers = Answer.save_many(answer_collection_params)
+    render json: answers, status: :created
   end
 
   private
