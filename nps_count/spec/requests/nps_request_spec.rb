@@ -26,7 +26,6 @@ RSpec.describe 'NpsController', type: :request do
 
     context 'When query has company and date empty' do
       let!(:company_name) { Faker::Company.unique.name }
-      let!(:february_date_query) { { month: 2, year: 2020 } }
       let!(:passives_quantity) { 55 }
       let!(:detractors_quantity) { 20 }
 
@@ -43,7 +42,7 @@ RSpec.describe 'NpsController', type: :request do
       end
 
       before do
-        get('/nps', params: { company: company_name, date: february_date_query })
+        get('/nps', params: { company: company_name, month: 2, year: 2020 })
       end
 
       it { expect(response).to have_http_status(200) }

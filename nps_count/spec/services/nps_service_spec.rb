@@ -81,13 +81,6 @@ RSpec.describe 'NpsService' do
     end
 
     context 'When receive date params' do
-      let!(:query_date) do
-        {
-          month: 4,
-          year: 2020
-        }
-      end
-
       before do
         january_date = Time.zone.local(2020, 1, 1)
         april_date = Time.zone.local(2020, 4, 1)
@@ -101,7 +94,9 @@ RSpec.describe 'NpsService' do
         create_list(:answer, 1, :detractor, timestamp: april_date)
       end
 
-      subject { NpsService.call(date: query_date) }
+      subject do
+        NpsService.call(month: 4, year: 2020)
+      end
 
       it {
         expect(subject).to eq('60.0%')
@@ -109,12 +104,6 @@ RSpec.describe 'NpsService' do
     end
 
     context 'When receive company name and date params' do
-      let!(:query_date) do
-        {
-          month: 4,
-          year: 2020
-        }
-      end
       let!(:company_name) { 'Funny Happy Recruiting' }
 
       before do
@@ -135,7 +124,7 @@ RSpec.describe 'NpsService' do
         create_list(:answer, 1, :detractor, timestamp: april_date, company: company_name)
       end
 
-      subject { NpsService.call(date: query_date, company: company_name) }
+      subject { NpsService.call(month: 4, year: 2020, company: company_name) }
 
       it {
         expect(subject).to eq('60.0%')

@@ -4,17 +4,17 @@ class NpsService < ApplicationService
   def initialize(params = {})
     @query = {}
     merge_company(params[:company]) if params.key? :company
-    merge_date(params[:date]) if params.key? :date
+    merge_date(params[:month], params[:year]) if params.key?(:month) && params.key?(:year)
   end
 
   def merge_company(company)
     @query['company'] = company
   end
 
-  def merge_date(date)
-    date = date.transform_keys(&:to_sym)
+  def merge_date(month, year)
+    day_number = 1
 
-    from_date = Time.zone.local(date[:year], date[:month], 1)
+    from_date = Time.zone.local(year, month, day_number)
     to_date = from_date.at_beginning_of_month.next_month
 
     from_timestamp = from_date.strftime('%Y-%m-%dT%H:%M:%S.%L%z')

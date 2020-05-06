@@ -5,8 +5,7 @@ class NpsController < ApplicationController
   end
 
   def nps_params
-    result = params.permit(:company)
-    result[:date] = params[:date].permit(:month, :year).to_hash if params[:date]
+    result = params.permit(:company, :month, :year)
     result.to_hash.transform_keys(&:to_sym)
   end
 end
