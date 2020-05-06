@@ -23,7 +23,7 @@ RSpec.describe 'NpsReportsController', type: :request do
         create_list(:answer, 55, :passive, company: third_company)
         create_list(:answer, 20, :detractor, company: third_company)
 
-        get('/nps_report')
+        get('/nps_report?type=highest')
       end
 
       it { expect(response).to have_http_status(200) }
@@ -35,6 +35,25 @@ RSpec.describe 'NpsReportsController', type: :request do
       it {
         expect(response_body['highest']['highest_nps_company']).to eq(highest_company)
       }
+    end
+    context 'When does not receive type param' do
+      before do
+        get('/nps_report')
+      end
+
+      it { expect(response).to have_http_status(400) }
+
+      it { expect(response_body['error_message']).to eq('param is missing or the value is empty: type') }
+    end
+
+    context 'When does not receive param' do
+      before do
+        get('/nps_report?type=unknowtype')
+      end
+
+      it { expect(response).to have_http_status(400) }
+
+      it { expect(response_body['error_message']).to eq('invalid report type') }
     end
   end
 end
