@@ -16,6 +16,10 @@ RSpec.configure do |config|
     MongoConnection.instance.drop
   end
 
+  config.after :all do
+    MongoConnection.instance.drop
+  end
+
   config.shared_context_metadata_behavior = :apply_to_host_groups
 end
 Pry.pager = false
