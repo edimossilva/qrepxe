@@ -6,10 +6,6 @@ class Answer
     @timestamp = date.strftime('%Y-%m-%dT%H:%M:%S.%L%z')
   end
 
-  def self.all
-    collection.find.map(&:to_json)
-  end
-
   def self.collection
     MongoConnection.instance.client[:answers]
   end
